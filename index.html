@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Employees, Flat Monthly - Unlimited Tasks</title>
+<meta name="description" content="Custom AI agents that run your repetitive work. One flat monthly price, unlimited tasks, cancel any time.">
+<!--
+  One-page sales site (Queen step 1, 2026-10-06). Static: open this file in a browser, no server needed.
+  DRAFT - prices, contact details and booking link are placeholders until David approves them (Queen step 5).
+  Edit the SITE block in the <script> at the bottom; nothing else needs touching.
+-->
+<style>
+  :root {
+    --bg: #0b1020; --panel: #121a33; --line: #23305a; --text: #e8ecf8; --muted: #9aa6c8;
+    --accent: #4fd1ff; --accent2: #8b7bff; --ok: #5be3a4; --warn: #ffcf6b;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+  a { color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  header { padding: 18px 0; border-bottom: 1px solid var(--line); }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { font-weight: 700; letter-spacing: .3px; }
+  .brand span { color: var(--accent); }
+  .btn { display: inline-block; padding: 12px 22px; border-radius: 10px; border: 0; cursor: pointer; font: inherit; font-weight: 600;
+         text-decoration: none; background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #071022; }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .draft { background: var(--warn); color: #2a1d00; text-align: center; font-size: 13px; padding: 6px 10px; }
+  .hero { padding: 72px 0 48px; text-align: center; }
+  .hero h1 { font-size: clamp(30px, 5vw, 50px); line-height: 1.15; margin: 0 0 16px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 19px; max-width: 680px; margin: 0 auto 28px; }
+  .hero .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  section { padding: 48px 0; }
+  h2 { font-size: 30px; margin: 0 0 8px; text-align: center; }
+  .sub { color: var(--muted); text-align: center; margin: 0 auto 32px; max-width: 640px; }
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .card h3 { margin: 0 0 6px; font-size: 19px; }
+  .card p { margin: 0; color: var(--muted); }
+  .steps .num { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+                background: var(--line); color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+  .tier { display: flex; flex-direction: column; }
+  .tier.best { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .tag { align-self: flex-start; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px;
+         background: var(--accent); color: #071022; margin-bottom: 8px; }
+  .price { font-size: 40px; font-weight: 800; margin: 10px 0 0; }
+  .price small { font-size: 16px; font-weight: 500; color: var(--muted); }
+  .was { color: var(--muted); text-decoration: line-through; font-size: 15px; min-height: 22px; }
+  .tier ul { list-style: none; padding: 0; margin: 16px 0 22px; flex: 1; }
+  .tier li { padding: 6px 0 6px 26px; position: relative; color: var(--text); }
+  .tier li::before { content: "\2713"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+  .tier .btn { text-align: center; }
+  .code { max-width: 520px; margin: 28px auto 0; text-align: center; }
+  .code form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .code input { flex: 1; min-width: 200px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line);
+                background: var(--panel); color: var(--text); font: inherit; text-transform: uppercase; letter-spacing: 2px; }
+  #codeMsg { min-height: 24px; margin-top: 8px; font-size: 14px; }
+  .fine { color: var(--muted); font-size: 13px; text-align: center; margin-top: 14px; }
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 10px 0 0; }
+  .book { text-align: center; background: linear-gradient(180deg, var(--panel), var(--bg)); border-top: 1px solid var(--line); }
+  footer { padding: 28px 0; color: var(--muted); font-size: 13px; text-align: center; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<div class="draft" id="draftBar">DRAFT - placeholder prices and contact details, not live yet.</div>
+
+<header>
+  <div class="wrap">
+    <div class="brand" id="brand">AI <span>Employees</span></div>
+    <a class="btn" href="#book">Book a free consultation</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1>An AI employee for your business.<br><em>One flat price. Unlimited tasks.</em></h1>
+      <p>We build custom AI agents that take over the repetitive work - inbox triage, lead follow-up, reports, scheduling,
+         data entry - and run them for you. No per-task fees, no surprise bills, cancel any time.</p>
+      <div class="ctas">
+        <a class="btn" href="#book">Schedule a free 30-minute consultation</a>
+        <a class="btn ghost" href="#pricing">See pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="what">
+    <div class="wrap">
+      <h2>What your AI employee can do</h2>
+      <p class="sub">Every agent is built around your own tools and workflow. A few common starting points:</p>
+      <div class="grid">
+        <div class="card"><h3>Inbox and leads</h3><p>Sorts incoming email, drafts replies for your approval, and follows up with new leads so none go cold.</p></div>
+        <div class="card"><h3>Reports</h3><p>Pulls numbers from your spreadsheets and apps into a clear daily or weekly summary.</p></div>
+        <div class="card"><h3>Scheduling</h3><p>Handles booking requests, reminders and calendar tidy-up.</p></div>
+        <div class="card"><h3>Data entry and admin</h3><p>Moves information between forms, sheets and systems without copy-paste.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="sub">You stay in control: agents draft and prepare, and anything that leaves your business waits for your OK unless you say otherwise.</p>
+      <div class="grid steps">
+        <div class="card"><div class="num">1</div><h3>Consultation</h3><p>A free 30-minute call to find the tasks that eat your week.</p></div>
+        <div class="card"><div class="num">2</div><h3>Build</h3><p>We build and test your first agent on your real workflow.</p></div>
+        <div class="card"><div class="num">3</div><h3>Run</h3><p>It works every day. Send new tasks whenever you like - unlimited, one flat price.</p></div>
+        <div class="card"><div class="num">4</div><h3>Improve</h3><p>We tune it as your business changes. Cancel any time, no lock-in.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <h2>Flat monthly pricing</h2>
+      <p class="sub">Unlimited task requests on every plan. No setup fees, no per-task charges, cancel any time.</p>
+      <div class="grid" id="tiers"></div>
+
+      <div class="code">
+        <form id="codeForm" autocomplete="off">
+          <input id="codeInput" maxlength="16" placeholder="Discount code" aria-label="Discount code">
+          <button class="btn ghost" type="submit">Apply</button>
+        </form>
+        <div id="codeMsg" aria-live="polite"></div>
+      </div>
+      <p class="fine">"Unlimited" means you can send as many task requests as you like; we work through them in order, one active
+         request per agent at a time, with typical turnaround stated during your consultation. Fair use applies to tasks
+         outside the agreed workflow. Prices in USD; a discount code is confirmed on your first invoice.</p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap" style="max-width:760px">
+      <h2>Questions</h2>
+      <details><summary>Is it really unlimited?</summary><p>Yes - there's no cap on how many task requests you send. Requests are handled in order, one active request per agent at a time, so bigger plans run more in parallel.</p></details>
+      <details><summary>Do I need to be technical?</summary><p>No. You describe the work in plain words; we build, connect and maintain the agent.</p></details>
+      <details><summary>What about my data?</summary><p>Agents only get the access a task needs, through the official connections of the tools you already use. We never ask for your passwords.</p></details>
+      <details><summary>Can I cancel?</summary><p>Any time, effective at the end of your billing month. No contracts.</p></details>
+    </div>
+  </section>
+
+  <section class="book" id="book">
+    <div class="wrap">
+      <h2>Let's find the work your AI employee should take first</h2>
+      <p class="sub">Free 30-minute consultation. No pressure, no obligation - you leave with a clear plan either way.</p>
+      <a class="btn" id="bookBtn" href="#book">Schedule a consultation</a>
+      <p class="fine" id="bookNote"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">&copy; <span id="year"></span> <span id="footBrand"></span> &middot; <a id="footMail" href="#book"></a></div>
+</footer>
+
+<script>
+/* ===== SITE: edit here (all placeholders until David approves - Queen step 5) ===== */
+const SITE = {
+  draft: false,                        // false hides the yellow DRAFT bar
+  brand: "Sophia Works",               // David chose 2026-10-06
+  email: "dgooden1997+agents@gmail.com", // his Gmail alias for now; David: buy a domain later and swap to hello@<domain>
+  bookingUrl: "",                      // e.g. a free Calendly / Google Calendar booking page; empty = email fallback
+  currency: "$",
+  tiers: [
+    { name: "Solo", price: 297, tag: "",
+      features: ["1 AI employee (agent)", "Unlimited task requests", "1 active request at a time",
+                 "Connects to 2 of your tools", "Email support, 2 business-day replies"] },
+    { name: "Unlimited", price: 597, tag: "Most popular",
+      features: ["3 AI employees (agents)", "Unlimited task requests", "3 active requests at a time",
+                 "Connects to all your tools", "Monthly tune-up call", "1 business-day replies"] },
+    { name: "Unlimited Team", price: 1197, tag: "",
+      features: ["Up to 8 AI employees (agents)", "Unlimited task requests", "8 active requests at a time",
+                 "Custom workflows across your team", "Weekly tune-up call", "Same-day replies"] }
+  ],
+  // DISCOUNT CODE PLACEHOLDER: the discount-code tool (Queen step 4) fills this.
+  // Format: "CODE": { percent: 20, note: "Launch offer" }. Static page = display only; the
+  // real discount is applied on the invoice, so a code here is a promise, not a payment.
+  discountCodes: {
+    // "EXAMPLE1": { percent: 20, note: "Launch offer - first 3 months" }
+    "7V7RTTJ4": { percent: 50, note: "Launch offer - first month" }
+  }
+};
+/* ===== end of SITE ===== */
+
+const $ = id => document.getElementById(id);
+const money = n => SITE.currency + Math.round(n).toLocaleString("en-US");
+let applied = null;
+
+function bookHref(plan) {
+  if (SITE.bookingUrl) return SITE.bookingUrl;
+  const subject = "Consultation request" + (plan ? " - " + plan + " plan" : "") + (applied ? " (code " + applied.code + ")" : "");
+  return "mailto:" + SITE.email + "?subject=" + encodeURIComponent(subject) +
+         "&body=" + encodeURIComponent("Hi, I'd like to book a free 30-minute consultation.\n\nBusiness:\nBest times:\n");
+}
+
+function renderTiers() {
+  $("tiers").innerHTML = SITE.tiers.map(t => {
+    const now = applied ? t.price * (1 - applied.percent / 100) : t.price;
+    return `<div class="card tier${t.tag ? " best" : ""}">
+      ${t.tag ? `<span class="tag">${t.tag}</span>` : ""}
+      <h3>${t.name}</h3>
+      <div class="price">${money(now)}<small> / month</small></div>
+      <div class="was">${applied ? money(t.price) + " / month" : ""}</div>
+      <ul>${t.features.map(f => `<li>${f}</li>`).join("")}</ul>
+      <a class="btn" href="${bookHref(t.name)}">Book a consultation</a>
+    </div>`;
+  }).join("");
+}
+
+$("codeForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const code = $("codeInput").value.trim().toUpperCase();
+  const hit = SITE.discountCodes[code];
+  const msg = $("codeMsg");
+  if (!code) { applied = null; msg.textContent = ""; }
+  else if (hit) { applied = { code, percent: hit.percent }; msg.style.color = "var(--ok)";
+                  msg.textContent = `Code ${code}: ${hit.percent}% off${hit.note ? " - " + hit.note : ""}. Mention it when you book.`; }
+  else { applied = null; msg.style.color = "var(--warn)"; msg.textContent = "That code isn't recognised."; }
+  renderTiers();
+  $("bookBtn").href = bookHref("");
+});
+
+if (!SITE.draft) $("draftBar").remove();
+$("brand").innerHTML = SITE.brand.replace(/(\S+)$/, "<span>$1</span>");
+$("footBrand").textContent = SITE.brand;
+$("footMail").textContent = SITE.email;
+$("footMail").href = "mailto:" + SITE.email;
+$("year").textContent = new Date().getFullYear();
+$("bookBtn").href = bookHref("");
+$("bookNote").textContent = SITE.bookingUrl ? "" : "Opens an email to " + SITE.email + " - we'll reply with times.";
+document.title = SITE.brand + " - flat monthly, unlimited tasks";
+renderTiers();
+</script>
+</body>
+</html>
