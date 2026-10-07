@@ -49,6 +49,7 @@
   .price { font-size: 40px; font-weight: 800; margin: 10px 0 0; }
   .price small { font-size: 16px; font-weight: 500; color: var(--muted); }
   .was { color: var(--muted); text-decoration: line-through; font-size: 15px; min-height: 22px; }
+  .for { color: var(--ok); font-size: 13px; margin-top: 2px; }
   .tier ul { list-style: none; padding: 0; margin: 16px 0 22px; flex: 1; }
   .tier li { padding: 6px 0 6px 26px; position: relative; color: var(--text); }
   .tier li::before { content: "\2713"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
@@ -131,7 +132,8 @@
       </div>
       <p class="fine">"Unlimited" means you can send as many task requests as you like; we work through them in order, one active
          request per agent at a time, with typical turnaround stated during your consultation. Fair use applies to tasks
-         outside the agreed workflow. Prices in USD; a discount code is confirmed on your first invoice.</p>
+         outside the agreed workflow. Prices in USD. A discount code takes its percent off your monthly price for the first
+         6 months of your subscription, then the normal price applies; it is confirmed on your first invoice.</p>
     </div>
   </section>
 
@@ -141,6 +143,7 @@
       <details><summary>Is it really unlimited?</summary><p>Yes - there's no cap on how many task requests you send. Requests are handled in order, one active request per agent at a time, so bigger plans run more in parallel.</p></details>
       <details><summary>Do I need to be technical?</summary><p>No. You describe the work in plain words; we build, connect and maintain the agent.</p></details>
       <details><summary>What about my data?</summary><p>Agents only get the access a task needs, through the official connections of the tools you already use. We never ask for your passwords.</p></details>
+      <details><summary>How do discount codes work?</summary><p>A code takes a percentage off your plan's monthly price for the first 6 months of your subscription. From month 7 you pay the normal price shown above. It is confirmed on your first invoice. Cancelling is still possible any time.</p></details>
       <details><summary>Can I cancel?</summary><p>Any time, effective at the end of your billing month. No contracts.</p></details>
     </div>
   </section>
@@ -178,12 +181,11 @@ const SITE = {
       features: ["Up to 8 AI employees (agents)", "Unlimited task requests", "8 active requests at a time",
                  "Custom workflows across your team", "Weekly tune-up call", "Same-day replies"] }
   ],
-  // DISCOUNT CODE PLACEHOLDER: the discount-code tool (Queen step 4) fills this.
-  // Format: "CODE": { percent: 20, note: "Launch offer" }. Static page = display only; the
-  // real discount is applied on the invoice, so a code here is a promise, not a payment.
+  // Discount codes - filled by discounts/make_code.py --site. DISCOUNT1 (David 2026-10-07): PERCENT off for the
+  // FIRST 6 MONTHS of a subscription (duration_months), then the normal price. expires = last day to redeem (null = none).
+  // Static page = display only; the real discount is applied on the invoice, so a code here is a promise, not a payment.
   discountCodes: {
-    // "EXAMPLE1": { percent: 20, note: "Launch offer - first 3 months" }
-    "7V7RTTJ4": { percent: 50, note: "Launch offer - first month" }
+    "7V7RTTJ4": { percent: 50, duration_months: 6, note: "Launch offer", created: "2026-10-06", expires: null }
   }
 };
 /* ===== end of SITE ===== */
@@ -207,6 +209,7 @@ function renderTiers() {
       <h3>${t.name}</h3>
       <div class="price">${money(now)}<small> / month</small></div>
       <div class="was">${applied ? money(t.price) + " / month" : ""}</div>
+      ${applied ? `<div class="for">for your first ${applied.months} months, then ${money(t.price)} / month</div>` : ""}
       <ul>${t.features.map(f => `<li>${f}</li>`).join("")}</ul>
       <a class="btn" href="${bookHref(t.name)}">Book a consultation</a>
     </div>`;
@@ -219,8 +222,12 @@ $("codeForm").addEventListener("submit", e => {
   const hit = SITE.discountCodes[code];
   const msg = $("codeMsg");
   if (!code) { applied = null; msg.textContent = ""; }
-  else if (hit) { applied = { code, percent: hit.percent }; msg.style.color = "var(--ok)";
-                  msg.textContent = `Code ${code}: ${hit.percent}% off${hit.note ? " - " + hit.note : ""}. Mention it when you book.`; }
+  else if (hit && hit.expires && new Date().toISOString().slice(0, 10) > hit.expires) {
+    applied = null; msg.style.color = "var(--warn)"; msg.textContent = `Code ${code} has expired.`; }
+  else if (hit) { const months = hit.duration_months || 6;
+                  applied = { code, percent: hit.percent, months }; msg.style.color = "var(--ok)";
+                  msg.textContent = `Code ${code}: ${hit.percent}% off your monthly price for the first ${months} months, ` +
+                                    `then the normal price.${hit.note ? " " + hit.note + "." : ""} Mention it when you book.`; }
   else { applied = null; msg.style.color = "var(--warn)"; msg.textContent = "That code isn't recognised."; }
   renderTiers();
   $("bookBtn").href = bookHref("");
