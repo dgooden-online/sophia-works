@@ -168,7 +168,7 @@ const SITE = {
   draft: false,                        // false hides the yellow DRAFT bar
   brand: "Sophia Works",               // David chose 2026-10-06
   email: "dgooden1997+agents@gmail.com", // his Gmail alias for now; David: buy a domain later and swap to hello@<domain>
-  bookingUrl: "",                      // e.g. a free Calendly / Google Calendar booking page; empty = email fallback
+  bookingUrl: "https://desktop-49rs3f7.tail8fb549.ts.net:10000/book",   // BOOK1 (David 2026-10-08): the Sanctum scheduler; empty = email fallback
   currency: "$",
   tiers: [
     { name: "Solo", price: 297, tag: "",
@@ -195,7 +195,12 @@ const money = n => SITE.currency + Math.round(n).toLocaleString("en-US");
 let applied = null;
 
 function bookHref(plan) {
-  if (SITE.bookingUrl) return SITE.bookingUrl;
+  if (SITE.bookingUrl) {                     // BOOK1: the scheduler gets the plan + applied code so they ride into the email
+    const q = new URLSearchParams();
+    if (plan) q.set("plan", plan);
+    if (applied) q.set("code", applied.code);
+    return SITE.bookingUrl + (q.toString() ? "?" + q.toString() : "");
+  }
   const subject = "Consultation request" + (plan ? " - " + plan + " plan" : "") + (applied ? " (code " + applied.code + ")" : "");
   return "mailto:" + SITE.email + "?subject=" + encodeURIComponent(subject) +
          "&body=" + encodeURIComponent("Hi, I'd like to book a free 30-minute consultation.\n\nBusiness:\nBest times:\n");
